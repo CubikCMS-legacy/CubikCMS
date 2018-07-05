@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# cubikcms build output
+build
+
+# cubikcms developement config file
+config.dev.json
