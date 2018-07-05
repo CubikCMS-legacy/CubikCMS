@@ -1,25 +1,23 @@
-import { WebServer } from './services/web/WebServer';
+import { WebServer } from "./services/web/WebServer";
 
-async function server() {
-    var failures = 0;
-    var web = new WebServer();
+let failuresCount = 0;
+const web = new WebServer();
 
-    await web.start()
-        .catch((err) => {
-            console.error(err);
+web.start()
+    .then(() => {
+        // The server is opened! Let's log this.
+        if (typeof web.server !== "undefined") {
+            const { uri } = web.server.settings;
 
-            if(failures < 10) {
-                web.restart();
-                failures++;
-            }
-        });
-    
-    if(typeof web.server !== "undefined") {
-        var { address, port } = web.server.settings;
-        address = address || 'localhost';
+            console.log(`Sever opened at ${uri}`);
+        }
+    })
+    .catch((err) => {
+        console.error(err);
 
-        console.log(`Sever opened at http://${address}:${port}/`);
-    }
-};
-
-server();
+        // Until there are 10 errors, restart the server
+        if (failuresCount < 10) {
+            web.restart();
+            failuresCount++;
+        }
+    });

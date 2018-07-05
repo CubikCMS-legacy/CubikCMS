@@ -13,6 +13,6 @@ export abstract class Service extends EventEmitter {
     }
 
     public abstract async start(): Promise<void>;
-    public abstract async stop():  Promise<void>;
+    public abstract async stop(): Promise<void>;
 
 }
