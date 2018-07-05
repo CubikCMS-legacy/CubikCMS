@@ -65,3 +65,6 @@ build
 
 # cubikcms developement config file
 config.dev.json
+
+# don't ignore .gitkeep files
+!**/.gitkeep
