@@ -5,4 +5,5 @@ const initialServices = [
 ];
 
 new Initializer()
+    .loadConfig()
     .runServices(initialServices);

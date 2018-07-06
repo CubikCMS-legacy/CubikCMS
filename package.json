@@ -2,7 +2,9 @@
   "name": "cubikcms",
   "version": "0.0.1",
   "dependencies": {
-    "hapi": "^17.5.2"
+    "cross-env": "^5.2.0",
+    "hapi": "^17.5.2",
+    "nodemon": "^1.17.5"
   },
   "devDependencies": {
     "@types/hapi": "^17.0.14",
@@ -13,7 +15,10 @@
     "typescript": "^2.9.2"
   },
   "scripts": {
-    "start": "node build/bootstrap",
-    "dev": "tsc && npm start"
+    "start": "npm run start:prod",
+    "start:prod": "cross-env NODE_ENV=production nodemon build/bootstrap",
+    "start:dev": "node build/bootstrap",
+    "build": "tsc",
+    "dev": "npm run build && npm run start:dev"
   }
 }
