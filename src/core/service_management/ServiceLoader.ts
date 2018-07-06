@@ -3,7 +3,15 @@ import { ServiceRegisty } from "./ServiceRegistry";
 
 export class ServiceLoader {
 
-    public async load(name: string) {
+    public async load(name: string | string[]) {
+        // If name is string[], load every element
+        if (name instanceof Array) {
+            for (const element of name) {
+                await this.load(element);
+            }
+            return;
+        }
+
         const serviceIndex = getServiceIndex(name);
 
         if (serviceIndex == null) {
@@ -16,9 +24,16 @@ export class ServiceLoader {
         await service.start();
     }
 
-    public async unload(name: string) {
+    public async unload(name: string | string[]) {
+        // If name is string[], unload every element
+        if (name instanceof Array) {
+            for (const element of name) {
+                await this.unload(element);
+            }
+            return;
+        }
+
         const service = ServiceRegisty.get(name);
-        console.log(service);
         if (service !== null) {
             await service.stop();
             ServiceRegisty.remove(name);
@@ -26,7 +41,15 @@ export class ServiceLoader {
 
     }
 
-    public async reload(name: string) {
+    public async reload(name: string | string[]) {
+        // If name is string[], reload every element
+        if (name instanceof Array) {
+            for (const element of name) {
+                await this.reload(element);
+            }
+            return;
+        }
+
         return this.unload(name).then(
             () => this.load(name)
         );
