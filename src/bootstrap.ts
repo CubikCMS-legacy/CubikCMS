@@ -1,9 +1,8 @@
-import { ServiceLoader } from "./core/service_management/ServiceLoader";
-const serviceLoader = new ServiceLoader();
+import { Initializer } from "./core/Initializer";
 
 const initialServices = [
     "web",
 ];
 
-// TODO: Add an error handling system
-serviceLoader.load(initialServices);
+new Initializer()
+    .runServices(initialServices);
