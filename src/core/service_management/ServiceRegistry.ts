@@ -16,11 +16,12 @@ export class ServiceRegisty {
     public static get<T extends Service>(name: string) {
         const service = ServiceRegisty.services[name];
 
-        if (typeof service !== "undefined") {
-            return service as T;
+        if (typeof service === "undefined") {
+            return null;
         }
-        return null;
+
+        return service as T;
     }
 
-    private static services: { [name: string]: Service };
+    private static services: { [name: string]: Service } = {};
 }

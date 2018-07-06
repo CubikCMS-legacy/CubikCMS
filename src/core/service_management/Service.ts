@@ -16,3 +16,7 @@ export abstract class Service extends EventEmitter {
     public abstract async stop(): Promise<void>;
 
 }
+
+export interface ServiceIndex {
+    service: Service;
+}

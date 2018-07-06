@@ -1,23 +1,15 @@
-import { WebServer } from "./services/web/WebServer";
+import { ServiceLoader } from "./core/service_management/ServiceLoader";
 
 let failuresCount = 0;
-const web = new WebServer();
+const serviceLoader = new ServiceLoader();
 
-web.start()
-    .then(() => {
-        // The server is opened! Let's log this.
-        if (typeof web.server !== "undefined") {
-            const { uri } = web.server.settings;
-
-            console.log(`Sever opened at ${uri}`);
-        }
-    })
+serviceLoader.load("web")
     .catch((err) => {
         console.error(err);
 
         // Until there are 10 errors, restart the server
         if (failuresCount < 10) {
-            web.restart();
+            serviceLoader.reload("web");
             failuresCount++;
         }
     });
