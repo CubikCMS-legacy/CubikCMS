@@ -17,7 +17,7 @@
   "scripts": {
     "start": "npm run start:prod",
     "start:prod": "cross-env NODE_ENV=production nodemon build/bootstrap",
-    "start:dev": "node build/bootstrap",
+    "start:dev": "cross-env NODE_ENV=developement node build/bootstrap",
     "build": "tsc",
     "dev": "npm run build && npm run start:dev"
   }
