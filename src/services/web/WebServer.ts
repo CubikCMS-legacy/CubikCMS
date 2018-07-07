@@ -11,15 +11,14 @@ export class WebServer extends Service {
     }
 
     public async start() {
+        const { address, port } = this.app.config;
         this.server = new hapi.Server({
-            port: 8315,
+            address,
+            port,
         });
+
         await loadPlugins(this.server);
         await loadRoutes(this.server);
-
-        let { address, port } = this.server.settings;
-        address = address || "localhost";
-        port    = port    || 80;
 
         return this.server.start()
             .then(() => console.log(`Web server opened at "http://${address}:${port}/".`));

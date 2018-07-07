@@ -1,4 +1,4 @@
 export interface Config {
-    ip: string;
+    address: string;
     port: number;
 }

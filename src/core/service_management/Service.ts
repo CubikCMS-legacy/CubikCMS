@@ -3,7 +3,7 @@ import { Application } from "../Application";
 
 export abstract class Service extends EventEmitter {
 
-    public app?: Application;
+    public app!: Application;
 
     constructor() {
         super();
