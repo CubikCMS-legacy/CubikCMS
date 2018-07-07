@@ -25,8 +25,8 @@ export class ServiceLoader {
         }
 
         const service = serviceIndex.service;
-        serviceIndex.service.app = this.app;
 
+        service.app = this.app;
         ServiceRegisty.add(name, service);
         await service.start();
     }
@@ -41,7 +41,9 @@ export class ServiceLoader {
         }
 
         const service = ServiceRegisty.get(name);
+
         if (service !== null) {
+            service.app = this.app;
             await service.stop();
             ServiceRegisty.remove(name);
         }
