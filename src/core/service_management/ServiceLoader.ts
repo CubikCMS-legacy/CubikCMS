@@ -1,7 +1,13 @@
 import { getServiceIndex } from "../../helpers/serviceHelpers";
+import { Application } from "../Application";
 import { ServiceRegisty } from "./ServiceRegistry";
 
 export class ServiceLoader {
+    public app: Application;
+
+    constructor(app: Application) {
+        this.app = app;
+    }
 
     public async load(name: string | string[]) {
         // If name is string[], load every element
@@ -19,6 +25,7 @@ export class ServiceLoader {
         }
 
         const service = serviceIndex.service;
+        serviceIndex.service.app = this.app;
 
         ServiceRegisty.add(name, service);
         await service.start();

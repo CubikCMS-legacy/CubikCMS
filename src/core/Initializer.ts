@@ -1,21 +1,23 @@
 import { EventEmitter } from "events";
 import { existsSync } from "fs";
 import { getNodeEnv } from "../helpers/envHelpers";
-import { ServiceLoader } from "./service_management/ServiceLoader";
+import { Config } from "../schemes/Config";
+import { Application } from "./Application";
 
 export class Initializer extends EventEmitter {
-
-    public serviceLoader = new ServiceLoader();
+    public app: Application;
+    public config?: Config;
     public errorHandler?: (err: any) => any;
-    public config: any;
 
     constructor() {
         super();
+
         if (getNodeEnv() === "dev") {
             console.warn("WARNING: You're running CubikCMS in developement mode.");
             console.warn("This mode may not be suitable for production purposes.");
             console.log();
         }
+        this.app = new Application();
     }
 
     public loadConfig() {
@@ -31,26 +33,13 @@ export class Initializer extends EventEmitter {
     }
 
     public runServices(services: string[]) {
-        this._handlePromiseErrors(
-            this.serviceLoader.load(services)
-        );
+        if (!this.app.initialized) {
+            this.app.initialize(this);
+        }
+
+        this.app.loadServices(services);
 
         return this;
-    }
-
-    public handleErrors() {
-        // TODO: Do an error handler
-    }
-
-    private _handlePromiseErrors<T>(element: Promise<T>) {
-        return element
-            .catch((err) => {
-                if (typeof this.errorHandler === "undefined") {
-                    throw err;
-                }
-
-                return this.errorHandler(err);
-            });
     }
 
 }
