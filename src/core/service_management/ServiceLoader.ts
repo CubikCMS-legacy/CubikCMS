@@ -1,3 +1,4 @@
+import { printLog } from "../../helpers/printHelpers";
 import { getServiceIndex } from "../../helpers/serviceHelpers";
 import { Application } from "../Application";
 import { ServiceRegisty } from "./ServiceRegistry";
@@ -27,8 +28,10 @@ export class ServiceLoader {
         const service = serviceIndex.service;
 
         service.app = this.app;
+        printLog(`Starting service '${name}'.`);
         ServiceRegisty.add(name, service);
         await service.start();
+        printLog(`Started service '${name}'.`);
     }
 
     public async unload(name: string | string[]) {
@@ -44,8 +47,10 @@ export class ServiceLoader {
 
         if (service !== null) {
             service.app = this.app;
+            printLog(`Stopping service '${name}'.`);
             await service.stop();
             ServiceRegisty.remove(name);
+            printLog(`Stopped service '${name}'.`);
         }
 
     }

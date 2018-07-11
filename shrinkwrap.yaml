@@ -1,8 +1,10 @@
 dependencies:
+  colors: 1.3.0
   cross-env: 5.2.0
   hapi: 17.5.2
   nodemon: 1.17.5
 devDependencies:
+  '@types/colors': 1.2.1
   '@types/hapi': 17.0.14
   '@types/node': 10.5.2
   gulp: 3.9.1
@@ -19,6 +21,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-FVnKcN80WTKLTaCfUqd+L4h8j/SQdA66MMe1mOrWqOpEMnM0aHbBw1qNbRO1Bfhc4i4YXkFv27QAsP5L4VAgXg==
+  /@types/colors/1.2.1:
+    dependencies:
+      colors: 1.3.0
+    dev: true
+    resolution:
+      integrity: sha512-7jNkpfN2lVO07nJ1RWzyMnNhH/I5N9iWuMPx9pedptxJ4MODf8rRV0lbJi6RakQ4sKQk231Fw4e2W9n3D7gZ3w==
   /@types/hapi/17.0.14:
     dependencies:
       '@types/boom': 7.2.0
@@ -508,6 +516,11 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==
+  /colors/1.3.0:
+    engines:
+      node: '>=0.1.90'
+    resolution:
+      integrity: sha512-EDpX3a7wHMWFA7PUHWPHNWqOxIIRSJetuwl0AS5Oi/5FMV8kWm69RTlgm00GKjBO1xFHMtBbL49yRtMMdticBw==
   /commander/2.16.0:
     dev: true
     resolution:
@@ -2881,8 +2894,10 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
 specifiers:
+  '@types/colors': ^1.2.1
   '@types/hapi': ^17.0.14
   '@types/node': ^10.5.2
+  colors: ^1.3.0
   cross-env: ^5.2.0
   gulp: ^3.9.1
   gulp-copy: ^1.1.0

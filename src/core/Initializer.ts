@@ -1,6 +1,7 @@
 import { EventEmitter } from "events";
 import { existsSync } from "fs";
 import { getNodeEnv } from "../helpers/envHelpers";
+import { printBlank, printWarn } from "../helpers/printHelpers";
 import { Config } from "../schemes/Config";
 import { Application } from "./Application";
 
@@ -13,9 +14,9 @@ export class Initializer extends EventEmitter {
         super();
 
         if (getNodeEnv() === "dev") {
-            console.warn("WARNING: You're running CubikCMS in developement mode.");
-            console.warn("This mode may not be suitable for production purposes.");
-            console.log();
+            printWarn("WARNING: You're running CubikCMS in developement mode.");
+            printWarn("This mode may not be suitable for production purposes.");
+            printBlank();
         }
         this.app = new Application();
     }
