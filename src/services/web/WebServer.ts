@@ -17,6 +17,10 @@ export class WebServer extends Service {
             port,
         });
 
+        const serverStorage: any = this.server.app;
+        serverStorage.app     = this.app;
+        serverStorage.service = this;
+
         await loadPlugins(this.server);
         await loadControllers(this.server);
 

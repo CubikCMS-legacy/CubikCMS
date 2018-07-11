@@ -1,5 +1,5 @@
 import { Server } from "hapi";
-import { loadController } from "../../helpers/controllerHelpers";
+import { loadController } from "./helpers/controllerHelpers";
 
 export function loadControllers(server: Server) {
 

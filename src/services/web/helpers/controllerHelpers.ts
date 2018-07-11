@@ -1,4 +1,5 @@
-import { Server, ServerRoute } from "hapi";
+import { ResponseToolkit, Server, ServerRoute } from "hapi";
+import { ViewRenderer } from "../lib/ViewRenderer";
 
 export function loadController(server: Server, controller: { [s: string]: ServerRoute; }) {
     for (const key in controller) {
@@ -10,4 +11,10 @@ export function loadController(server: Server, controller: { [s: string]: Server
             }
         }
     }
+}
+
+export function getControllerUtils(h: ResponseToolkit) {
+    return {
+        view: new ViewRenderer(h),
+    };
 }

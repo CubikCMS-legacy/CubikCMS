@@ -4,9 +4,7 @@ import { ServiceLoader } from "./service_management/ServiceLoader";
 
 export class Application {
     public errorHandler?: (err: any) => any;
-
     public initialized = false;
-
     public config!: Config;
     public serviceLoader: ServiceLoader;
 
