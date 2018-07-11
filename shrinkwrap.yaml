@@ -4,6 +4,7 @@ dependencies:
   nodemon: 1.17.5
 devDependencies:
   '@types/hapi': 17.0.14
+  '@types/node': 10.5.2
   gulp: 3.9.1
   gulp-copy: 1.1.0
   run-sequence: 2.2.1
@@ -55,6 +56,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-AFLl1IALIuyt6oK4AYZsgWVJ/5rnyzQWud7IebaZWWV3YmgtPZkQmYio9R5Ze/2pdd7XfqF5bP+hWS11mAKoOQ==
+  /@types/node/10.5.2:
+    dev: true
+    resolution:
+      integrity: sha512-m9zXmifkZsMHZBOyxZWilMwmTlpC8x5Ty360JKTiXvlXZfBWYpsg9ZZvP/Ye+iZUh+Q+MxDLjItVTWIsfwz+8Q==
   /@types/podium/1.0.0:
     dev: true
     resolution:
@@ -2877,6 +2882,7 @@ shrinkwrapMinorVersion: 8
 shrinkwrapVersion: 3
 specifiers:
   '@types/hapi': ^17.0.14
+  '@types/node': ^10.5.2
   cross-env: ^5.2.0
   gulp: ^3.9.1
   gulp-copy: ^1.1.0

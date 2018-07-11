@@ -1,7 +1,7 @@
 import * as hapi from "hapi";
 import { Service } from "../../core/service_management/Service";
+import { loadControllers } from "./controllers";
 import { loadPlugins } from "./plugins";
-import { loadRoutes } from "./routes";
 
 export class WebServer extends Service {
     public server?: hapi.Server;
@@ -18,7 +18,7 @@ export class WebServer extends Service {
         });
 
         await loadPlugins(this.server);
-        await loadRoutes(this.server);
+        await loadControllers(this.server);
 
         return this.server.start()
             .then(() => console.log(`Web server opened at "http://${address}:${port}/".`));
