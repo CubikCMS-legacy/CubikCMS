@@ -1,6 +1,8 @@
 import { Config } from "../schemes/Config";
 import { Initializer } from "./Initializer";
 import { ServiceLoader } from "./service_management/ServiceLoader";
+import { extensionEmitter } from "./extension_management/extensionEmitter";
+import { EventCode } from "./extension_management/extensionCodes";
 
 export class Application {
     public errorHandler?: (err: any) => any;
