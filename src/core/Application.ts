@@ -28,10 +28,12 @@ export class Application {
     }
 
     public async registerExtensions() {
-        const files = readdirSync("./../../addons/extensions");
+        const dir = __dirname + "/../../addons/extensions/";
+
+        const files = readdirSync(dir);
         for (const file of files) {
-            if (lstatSync(file).isDirectory()) {
-                this.extensionLoader.load(file);
+            if (lstatSync(dir + file).isDirectory()) {
+                await this.extensionLoader.load(file);
             }
         }
     }

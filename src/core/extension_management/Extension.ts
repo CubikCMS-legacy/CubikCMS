@@ -1,5 +1,5 @@
-import { existsSync } from 'fs';
 import { fork, setupMaster, Worker } from "cluster";
+import { existsSync } from "fs";
 import { join } from "path";
 
 export class Extension {
@@ -10,30 +10,30 @@ export class Extension {
     constructor(name: string) {
         this.pathName = name;
 
-        var rootDir = '../../../addons/extensions/' + name;
-        var packagePath = join(rootDir, 'package.json');
+        const rootDir = join(__dirname, "../../../addons/extensions/", name);
+        const packagePath = join(rootDir, "package.json");
 
-        if(!existsSync(packagePath)) {
+        if (!existsSync(packagePath)) {
             throw new Error("Extension package not found for '" + name + "'.");
         }
 
         this.package = require(packagePath);
 
-        var settings: any = {
+        const settings: any = {
+            cwd: rootDir,
             exec: join(rootDir, this.package.main),
-            cwd: rootDir
-        }
+        };
 
         setupMaster(settings);
         this.worker = fork();
     }
 
     get name() {
-        var name = this.package.name;
+        const name = this.package.name;
         if (typeof name !== "string") {
             throw new Error(this.pathName + ": Invalid extension name: " + name + ".");
         }
-        
+
         return name;
     }
 }

@@ -1,10 +1,14 @@
+import autobind from "autobind-decorator";
 import { EventEmitter } from "events";
 import { existsSync } from "fs";
 import { getNodeEnv } from "../helpers/envHelpers";
 import { printBlank, printWarn } from "../helpers/printHelpers";
 import { Config } from "../schemes/Config";
 import { Application } from "./Application";
+import { EventCode } from "./extension_management/extensionCodes";
+import { emitToExtensions } from "./extension_management/ExtensionMessenger";
 
+@autobind
 export class Initializer extends EventEmitter {
     public app: Application;
     public config?: Config;
@@ -47,6 +51,7 @@ export class Initializer extends EventEmitter {
 
     public async registerExtensions() {
         await this.app.registerExtensions();
+        emitToExtensions(EventCode.CORE_READY);
 
         return this;
     }

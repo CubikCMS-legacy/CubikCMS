@@ -1,6 +1,11 @@
 import { Extension } from "./Extension";
 
 export class ExtensionRegisty {
+
+    public static all() {
+        return {...ExtensionRegisty.extensions};
+    }
+
     public static add(name: string, extension: Extension) {
         if (typeof ExtensionRegisty.extensions[name] !== "undefined") {
             throw new Error("Extension already exists.");

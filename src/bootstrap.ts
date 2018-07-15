@@ -1,14 +1,14 @@
 import { Initializer } from "./core/Initializer";
 
 const initialServices = [
-    "web"
+    "web",
 ];
 
-void async function({ loadConfig, initializeApp, registerExtensions, runServices }) {
+(async ({ loadConfig, initializeApp, registerExtensions, runServices }) => {
 
     loadConfig();
-    await initializeApp();
+    initializeApp();
     await registerExtensions();
     await runServices(initialServices);
 
-}( new Initializer() );
+})( new Initializer() );
