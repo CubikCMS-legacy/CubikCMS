@@ -33,12 +33,20 @@ export class Initializer extends EventEmitter {
         return this;
     }
 
-    public runServices(services: string[]) {
+    public initializeApp() {
         if (!this.app.initialized) {
             this.app.initialize(this);
         }
+    }
 
-        this.app.loadServices(services);
+    public async runServices(services: string[]) {
+        await this.app.loadServices(services);
+
+        return this;
+    }
+
+    public async registerExtensions() {
+        await this.app.registerExtensions();
 
         return this;
     }

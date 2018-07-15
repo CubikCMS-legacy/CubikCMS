@@ -1,16 +1,18 @@
+import { lstatSync, readdirSync } from "fs";
 import { Config } from "../schemes/Config";
+import { ExtensionLoader } from "./extension_management/ExtensionLoader";
 import { Initializer } from "./Initializer";
 import { ServiceLoader } from "./service_management/ServiceLoader";
-import { extensionEmitter } from "./extension_management/extensionEmitter";
-import { EventCode } from "./extension_management/extensionCodes";
 
 export class Application {
     public errorHandler?: (err: any) => any;
     public initialized = false;
     public config!: Config;
+    public extensionLoader: ExtensionLoader;
     public serviceLoader: ServiceLoader;
 
     constructor() {
+        this.extensionLoader = new ExtensionLoader(this);
         this.serviceLoader = new ServiceLoader(this);
     }
 
@@ -25,7 +27,16 @@ export class Application {
         this.initialized = true;
     }
 
-    public loadServices(services: string[]) {
+    public async registerExtensions() {
+        const files = readdirSync("./../../addons/extensions");
+        for (const file of files) {
+            if (lstatSync(file).isDirectory()) {
+                this.extensionLoader.load(file);
+            }
+        }
+    }
+
+    public async loadServices(services: string[]) {
         return this._handlePromiseErrors(
             this.serviceLoader.load(services)
         );
