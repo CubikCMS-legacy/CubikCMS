@@ -1,6 +1,4 @@
-import { lstatSync, readdirSync } from "fs";
 import { Config } from "../schemes/Config";
-import { ExtensionLoader } from "./extension_management/ExtensionLoader";
 import { Initializer } from "./Initializer";
 import { ServiceLoader } from "./service_management/ServiceLoader";
 
@@ -8,11 +6,9 @@ export class Application {
     public errorHandler?: (err: any) => any;
     public initialized = false;
     public config!: Config;
-    public extensionLoader: ExtensionLoader;
     public serviceLoader: ServiceLoader;
 
     constructor() {
-        this.extensionLoader = new ExtensionLoader(this);
         this.serviceLoader = new ServiceLoader(this);
     }
 
@@ -27,23 +23,22 @@ export class Application {
         this.initialized = true;
     }
 
-    public async registerExtensions() {
-        const dir = __dirname + "/../../addons/extensions/";
-
-        const files = readdirSync(dir);
-        for (const file of files) {
-            if (lstatSync(dir + file).isDirectory()) {
-                await this.extensionLoader.load(file);
-            }
-        }
-    }
-
+    /**
+     * Loads services
+     * @param services Name of services to load
+     * @returns {Promise<any>}
+     */
     public async loadServices(services: string[]) {
         return this._handlePromiseErrors(
             this.serviceLoader.load(services)
         );
     }
 
+    /**
+     * Send promise errors of element to the error handler
+     * @param {Promise<T>} element Promise to handle
+     * @returns {Promise<T>} Handled promise
+     */
     private _handlePromiseErrors<T>(element: Promise<T>) {
         return element
             .catch((err) => {

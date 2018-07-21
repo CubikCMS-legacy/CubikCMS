@@ -2,11 +2,13 @@ import autobind from "autobind-decorator";
 import { EventEmitter } from "events";
 import { existsSync } from "fs";
 import { getNodeEnv } from "../helpers/envHelpers";
+import { emitToExtensions, sendToExtensions } from "../helpers/messengers/extensionMessenger";
 import { printBlank, printWarn } from "../helpers/printHelpers";
 import { Config } from "../schemes/Config";
+import { EventCode } from "../services/extensions/codes";
+import { ExtensionsServer } from "../services/extensions/ExtensionsServer";
 import { Application } from "./Application";
-import { EventCode } from "./extension_management/extensionCodes";
-import { emitToExtensions } from "./extension_management/ExtensionMessenger";
+import { ServiceRegisty } from "./service_management/ServiceRegistry";
 
 @autobind
 export class Initializer extends EventEmitter {
@@ -45,13 +47,6 @@ export class Initializer extends EventEmitter {
 
     public async runServices(services: string[]) {
         await this.app.loadServices(services);
-
-        return this;
-    }
-
-    public async registerExtensions() {
-        await this.app.registerExtensions();
-        emitToExtensions(EventCode.CORE_READY);
 
         return this;
     }

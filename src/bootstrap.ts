@@ -4,11 +4,12 @@ const initialServices = [
     "web",
 ];
 
-(async ({ loadConfig, initializeApp, registerExtensions, runServices }) => {
+initialServices.push("extensions"); // We do extensions loading at last
+
+(async ({ loadConfig, initializeApp, runServices }) => {
 
     loadConfig();
     initializeApp();
-    await registerExtensions();
     await runServices(initialServices);
 
 })( new Initializer() );

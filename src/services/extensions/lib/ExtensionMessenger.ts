@@ -1,4 +1,4 @@
-import { Application } from "../Application";
+import { Application } from "../../../core/Application";
 import { Extension } from "./Extension";
 import { ExtensionRegisty } from "./ExtensionRegistry";
 
@@ -15,7 +15,9 @@ export function sendToExtensions(msg: Message) {
         if (typeof extensions[name] !== "undefined") {
             const extension = extensions[name];
 
-            extension.worker.send(msg);
+            if (typeof extension.worker !== "undefined") {
+                extension.worker.send(msg);
+            }
         }
     }
 }
@@ -51,12 +53,14 @@ export function listenFromExtensions(searchedType: string, listener: (ext: Exten
                 // Call the listener with the data
                 const stillLoop = listener(extension, message);
 
-                if (stillLoop === false) {
+                if (stillLoop === false && typeof extension.worker !== "undefined") {
                     extension.worker.removeListener("message", messageListener);
                 }
             };
 
-            extension.worker.addListener("message", messageListener);
+            if (typeof extension.worker !== "undefined") {
+                extension.worker.addListener("message", messageListener);
+            }
         }
     }
 }
