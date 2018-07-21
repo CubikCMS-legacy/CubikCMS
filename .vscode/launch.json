@@ -7,11 +7,41 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Compile + Run",
+            "program": "${workspaceRoot}/src/bootstrap.ts",
+            "args": [],
+            "preLaunchTask": "build",
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "cwd": "${workspaceRoot}",
+            "outFiles": [
+                "${workspaceRoot}/build/*.js"
+            ],
+            "sourceMaps": true,
+            "stopOnEntry": false
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Run",
             "program": "${workspaceFolder}\\build\\bootstrap",
+            "env": {
+                "NODE_ENV": "development"
+            },
             "outFiles": [
                 "${workspaceFolder}/build/*.js"
             ]
+        },
+        {
+            "name": "Attach",
+            "type": "node",
+            "request": "attach",
+            "port": 5858
         }
     ]
 }
