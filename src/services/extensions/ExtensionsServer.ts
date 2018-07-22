@@ -24,7 +24,7 @@ export class ExtensionsServer extends Service {
     }
 
     public async stop() {
-        this.extensionRunner.stop();
+        await this.extensionRunner.stop();
     }
 
 }
