@@ -1,12 +1,12 @@
 dependencies:
-  cubikcms: github.com/CubikCMS/CubikCMS-ExtensionAPI/e2257455c415532276da1010e3f88d30880e01dd
+  cubikcms: github.com/CubikCMS/CubikCMS-ExtensionAPI/bc10878abd6f67e6c275f13435d6c548847b0592
 packages:
-  github.com/CubikCMS/CubikCMS-ExtensionAPI/e2257455c415532276da1010e3f88d30880e01dd:
+  github.com/CubikCMS/CubikCMS-ExtensionAPI/bc10878abd6f67e6c275f13435d6c548847b0592:
     dev: false
     name: cubikcms
     requiresBuild: true
     resolution:
-      tarball: 'https://codeload.github.com/CubikCMS/CubikCMS-ExtensionAPI/tar.gz/e2257455c415532276da1010e3f88d30880e01dd'
+      tarball: 'https://codeload.github.com/CubikCMS/CubikCMS-ExtensionAPI/tar.gz/bc10878abd6f67e6c275f13435d6c548847b0592'
     version: 0.0.1
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 8
