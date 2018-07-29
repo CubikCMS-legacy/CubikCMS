@@ -1,42 +1,44 @@
 import autobind from "autobind-decorator";
 import { EventEmitter } from "events";
 import { existsSync } from "fs";
-import { getNodeEnv } from "../helpers/envHelpers";
 import { emitToExtensions, sendToExtensions } from "../helpers/messengers/extensionMessenger";
-import { printBlank, printWarn } from "../helpers/printHelpers";
 import { Config } from "../schemes/Config";
 import { EventCode } from "../services/extensions/codes";
 import { ExtensionsServer } from "../services/extensions/ExtensionsServer";
 import { Application } from "./Application";
+import { Configuration } from "./Configuration";
+import { CubikCMS } from "./CubikCMS";
+import { ErrorHandler } from "./ErrorHandler";
 import { ServiceRegisty } from "./service_management/ServiceRegistry";
 
 @autobind
 export class Initializer extends EventEmitter {
     public app: Application;
     public config?: Config;
-    public errorHandler?: (err: any) => any;
 
     constructor() {
         super();
 
-        if (getNodeEnv() === "dev") {
-            printWarn("WARNING: You're running CubikCMS in developement mode.");
-            printWarn("This mode may not be suitable for production purposes.");
-            printBlank();
-        }
         this.app = new Application();
+        CubikCMS.executeInitialization(this);
+
+        if (CubikCMS.environment === "dev") {
+            CubikCMS.logger.warning("You're running CubikCMS in developement mode.");
+            CubikCMS.logger.warning("This mode may not be suitable for production purposes.");
+        }
+    }
+
+    public async launch(script: (initializer: Initializer) => Promise<void>) {
+        try {
+            await script(this);
+        } catch (err) {
+            CubikCMS.logger.fatal(err);
+        }
     }
 
     public loadConfig() {
-        const nodeEnv = getNodeEnv();
-
-        if (existsSync(`${__dirname}/../../config.${nodeEnv}.json`)) {
-            this.config = require(`../../config.${nodeEnv}.json`);
-        } else {
-            throw new Error(`Config file "config.${nodeEnv}.json" was not found.`);
-        }
-
-        return this;
+        const env = CubikCMS.environment;
+        CubikCMS.loadConfiguration(new Configuration(`config.${env}.json`));
     }
 
     public initializeApp() {
@@ -47,8 +49,6 @@ export class Initializer extends EventEmitter {
 
     public async runServices(services: string[]) {
         await this.app.loadServices(services);
-
-        return this;
     }
 
 }

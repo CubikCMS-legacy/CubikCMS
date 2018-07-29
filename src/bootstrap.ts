@@ -2,14 +2,12 @@ import { Initializer } from "./core/Initializer";
 
 const initialServices = [
     "web",
+    "extensions",  // We do extensions loading at last
 ];
 
-initialServices.push("extensions"); // We do extensions loading at last
-
-(async ({ loadConfig, initializeApp, runServices }) => {
-
-    loadConfig();
-    initializeApp();
-    await runServices(initialServices);
-
-})( new Initializer() );
+new Initializer()
+    .launch(async ({ loadConfig, initializeApp, runServices }) => {
+        loadConfig();
+        initializeApp();
+        await runServices(initialServices);
+    });
