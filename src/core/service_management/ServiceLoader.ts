@@ -1,5 +1,4 @@
 import { getServiceIndex } from "../../helpers/serviceHelpers";
-import { Application } from "../Application";
 import { CubikCMS } from "../CubikCMS";
 import { ErrorHandler } from "../ErrorHandler";
 import { NotFoundError } from "../errors/NotFoundError";

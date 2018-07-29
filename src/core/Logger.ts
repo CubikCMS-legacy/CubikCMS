@@ -1,5 +1,4 @@
 import "colors";
-import { Console } from "console";
 
 export enum LogLevel {
     STEP,

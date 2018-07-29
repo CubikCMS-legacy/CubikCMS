@@ -1,15 +1,9 @@
 import autobind from "autobind-decorator";
 import { EventEmitter } from "events";
-import { existsSync } from "fs";
-import { emitToExtensions, sendToExtensions } from "../helpers/messengers/extensionMessenger";
 import { Config } from "../schemes/Config";
-import { EventCode } from "../services/extensions/codes";
-import { ExtensionsServer } from "../services/extensions/ExtensionsServer";
 import { Application } from "./Application";
 import { Configuration } from "./Configuration";
 import { CubikCMS } from "./CubikCMS";
-import { ErrorHandler } from "./ErrorHandler";
-import { ServiceRegisty } from "./service_management/ServiceRegistry";
 
 @autobind
 export class Initializer extends EventEmitter {

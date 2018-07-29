@@ -6,7 +6,6 @@ import { Initializer } from "./Initializer";
 import { Logger } from "./Logger";
 import { Service } from "./service_management/Service";
 import { ServiceLoader } from "./service_management/ServiceLoader";
-import { ServiceRegisty } from "./service_management/ServiceRegistry";
 
 export class CubikCMS {
 
