@@ -6,8 +6,6 @@ import { ServiceLoader } from "./service_management/ServiceLoader";
 
 export class Application {
     public initialized = false;
-    public config!: Config;
-    public serviceLoader: ServiceLoader;
 
     constructor() {
         //
