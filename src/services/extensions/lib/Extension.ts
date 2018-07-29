@@ -1,7 +1,7 @@
 import { fork, setupMaster, Worker } from "cluster";
 import { existsSync } from "fs";
 import { join } from "path";
-import { printDevWarn, printLog } from "../../../helpers/printHelpers";
+import { CubikCMS } from "../../../core/CubikCMS";
 
 export class Extension {
     public package: any;
@@ -45,7 +45,7 @@ export class Extension {
     }
 
     public async startWorker() {
-        printLog(`Starting extension '${this.name}'.`);
+        CubikCMS.logger.debug(`Starting extension '${this.name}'.`);
 
         const root = this.root;
 
@@ -57,26 +57,25 @@ export class Extension {
         setupMaster(settings);
         this.worker = fork();
 
-        await new Promise((resolve, reject) => {
-            this.worker!.once("online", resolve);
-            this.worker!.once("error", reject);
-        });
-
-        printLog(`Started extension '${this.name}'.`);
+        CubikCMS.logger.debug(`Started extension '${this.name}'.`);
     }
 
     public async killWorker() {
         if (typeof this.worker === "undefined") {
-            printDevWarn(`Extension '${this.name}' not stopped: All workers are already stopped.`);
+            CubikCMS.logger.step(`Extension '${this.name}' not stopped: All workers are already stopped.`);
             return;
         }
-        printLog(`Stopping extension '${this.name}'.`);
+        CubikCMS.logger.debug(`Stopping extension '${this.name}'.`);
 
         this.worker.kill();
         await new Promise((resolve) => {
-            this.worker!.once("exit", resolve);
+            this.worker!.once("exit", () => {
+                if (this.worker!.exitedAfterDisconnect === true) {
+                    resolve();
+                }
+            });
         });
 
-        printLog(`Stopped extension '${this.name}'.`);
+        CubikCMS.logger.debug(`Stopped extension '${this.name}'.`);
     }
 }

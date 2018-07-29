@@ -1,6 +1,6 @@
 import * as hapi from "hapi";
+import { CubikCMS } from "../../core/CubikCMS";
 import { Service } from "../../core/service_management/Service";
-import { printMessage } from "../../helpers/printHelpers";
 import { loadControllers } from "./controllers";
 import { loadPlugins } from "./plugins";
 
@@ -12,7 +12,7 @@ export class WebServer extends Service {
     }
 
     public async start() {
-        const { address, port } = this.app.config;
+        const { address, port } = CubikCMS.configuration;
         this.server = new hapi.Server({
             address,
             port,
@@ -26,13 +26,13 @@ export class WebServer extends Service {
         await loadControllers(this.server);
 
         return this.server.start()
-            .then(() => printMessage(`Web server opened at "http://${address}:${port}/".`));
+            .then(() => CubikCMS.logger.info(`Web server opened at "http://${address}:${port}/".`));
     }
 
     public async stop() {
         if (typeof this.server !== "undefined") {
             return this.server.stop()
-                .then(() => printMessage(`Web server stopped.`));
+                .then(() => CubikCMS.logger.info(`Web server stopped.`));
         }
     }
 

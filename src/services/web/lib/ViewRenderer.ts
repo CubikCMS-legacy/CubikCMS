@@ -3,8 +3,8 @@ import { getObjectEntries } from "../../../helpers/objectHelpers";
 import { WebServer } from "../WebServer";
 
 export class ViewRenderer {
-    protected server: WebServer;
     protected h: ResponseToolkit;
+    protected server: WebServer;
 
     constructor(h: ResponseToolkit) {
         const serverStorage: any = h.request.server.app;
