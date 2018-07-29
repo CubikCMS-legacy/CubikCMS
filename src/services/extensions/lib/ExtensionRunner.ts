@@ -37,6 +37,8 @@ export class ExtensionRunner {
         if (extension.name !== extension.pathName) {
             throw new Error(extension.pathName + ": Package name is not the same as his folder.");
         }
+
+        ExtensionRegisty.add(name, extension);
     }
 
     public async load(name: string) {
@@ -47,7 +49,6 @@ export class ExtensionRunner {
         }
 
         await extension.startWorker();
-        ExtensionRegisty.add(name, extension);
     }
 
     public async unload(name: string) {

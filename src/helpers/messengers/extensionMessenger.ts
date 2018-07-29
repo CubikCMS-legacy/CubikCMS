@@ -1,10 +1,17 @@
 import { Extension } from "../../services/extensions/lib/Extension";
 import { ExtensionRegisty } from "../../services/extensions/lib/ExtensionRegistry";
+import { hasEntriesInObject } from "../objectHelpers";
 
 export interface Message {
-    type: string;
+    cmd: string;
     code: string;
     values: any[];
+    token?: string;
+}
+export interface MessageMatch {
+    cmd?: string;
+    code?: string;
+    values?: any[];
     token?: string;
 }
 
@@ -23,13 +30,13 @@ export function sendToExtensions(msg: Message) {
 
 export function emitToExtensions(code: string, ...values: any[]) {
     sendToExtensions({
+        cmd: "emitEvent",
         code,
-        type: "event",
         values,
     });
 }
 
-export function listenFromExtensions(searchedType: string, listener: (ext: Extension, msg: Message) => boolean | void) {
+export function listenFromExtensions(match: MessageMatch, listener: (ext: Extension, msg: Message) => boolean | void) {
     const extensions = ExtensionRegisty.all();
     for (const name in extensions) {
         if (typeof extensions[name] !== "undefined") {
@@ -38,12 +45,12 @@ export function listenFromExtensions(searchedType: string, listener: (ext: Exten
             const messageListener = (message: Message) => {
                 if (typeof message !== "object") { return; }
 
-                const { type, code, values } = message;
+                const { cmd, code, values } = message;
 
-                // If type is not a string
-                if (typeof type !== "string") { return; }
-                // If current type is not what wee're looking for or "any", stop looking message.
-                if (type !== searchedType && searchedType !== "any") { return; }
+                // If cmd is not a string
+                if (typeof cmd !== "string") { return; }
+                // If matched properties are in the message
+                if (hasEntriesInObject(match, message)) { return; }
                 // If code is not a string, stop.
                 if (typeof code !== "string") { return; }
                 // If values are not in array
