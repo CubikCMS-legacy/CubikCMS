@@ -1,20 +1,22 @@
 import { Service } from "./Service";
 
 export class ServiceRegisty {
-    public static add(name: string, service: Service) {
-        if (typeof ServiceRegisty.services[name] !== "undefined") {
+    private services: { [name: string]: Service } = {};
+
+    public add(name: string, service: Service) {
+        if (typeof this.services[name] !== "undefined") {
             throw new Error("Service already exists.");
         }
 
-        ServiceRegisty.services[name] = service;
+        this.services[name] = service;
     }
 
-    public static remove(name: string) {
-        delete ServiceRegisty.services[name];
+    public remove(name: string) {
+        delete this.services[name];
     }
 
-    public static get<T extends Service>(name: string) {
-        const service = ServiceRegisty.services[name];
+    public get<T extends Service>(name: string) {
+        const service = this.services[name];
 
         if (typeof service === "undefined") {
             return null;
@@ -22,6 +24,4 @@ export class ServiceRegisty {
 
         return service as T;
     }
-
-    private static services: { [name: string]: Service } = {};
 }

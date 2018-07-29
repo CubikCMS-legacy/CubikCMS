@@ -1,16 +1,16 @@
-import { printLog } from "../../helpers/printHelpers";
 import { getServiceIndex } from "../../helpers/serviceHelpers";
 import { Application } from "../Application";
+import { CubikCMS } from "../CubikCMS";
+import { ErrorHandler } from "../ErrorHandler";
+import { NotFoundError } from "../errors/NotFoundError";
 import { ServiceRegisty } from "./ServiceRegistry";
 
 export class ServiceLoader {
-    public app: Application;
-
-    constructor(app: Application) {
-        this.app = app;
+    public static get registry() {
+        return this._registry;
     }
 
-    public async load(name: string | string[]) {
+    public static async load(name: string | string[]) {
         // If name is string[], load every element
         if (name instanceof Array) {
             for (const element of name) {
@@ -22,19 +22,22 @@ export class ServiceLoader {
         const serviceIndex = getServiceIndex(name);
 
         if (serviceIndex == null) {
-            throw new Error(`no service found with name '${name}'.`);
+            throw new NotFoundError(`No service found with name '${name}'.`);
         }
 
         const service = serviceIndex.service;
 
-        service.app = this.app;
-        printLog(`Starting service '${name}'.`);
-        ServiceRegisty.add(name, service);
-        await service.start();
-        printLog(`Started service '${name}'.`);
+        await ErrorHandler.catchAsync(async () => {
+
+            CubikCMS.logger.debug(`Starting service '${name}'.`);
+            await service.start();
+            this.registry.add(name, service);
+            CubikCMS.logger.debug(`Started service '${name}'.`);
+
+        }, `${name} service`);
     }
 
-    public async unload(name: string | string[]) {
+    public static async unload(name: string | string[]) {
         // If name is string[], unload every element
         if (name instanceof Array) {
             for (const element of name) {
@@ -43,19 +46,24 @@ export class ServiceLoader {
             return;
         }
 
-        const service = ServiceRegisty.get(name);
+        const service = this.registry.get(name);
 
         if (service !== null) {
-            service.app = this.app;
-            printLog(`Stopping service '${name}'.`);
-            await service.stop();
-            ServiceRegisty.remove(name);
-            printLog(`Stopped service '${name}'.`);
+            service.app = CubikCMS.application;
+
+            await ErrorHandler.catchAsync(async () => {
+
+                CubikCMS.logger.debug(`Stopping service '${name}'.`);
+                await service.stop();
+                this.registry.remove(name);
+                CubikCMS.logger.debug(`Stopped service '${name}'.`);
+
+            }, `${name} service`);
         }
 
     }
 
-    public async reload(name: string | string[]) {
+    public static async reload(name: string | string[]) {
         // If name is string[], reload every element
         if (name instanceof Array) {
             for (const element of name) {
@@ -69,4 +77,5 @@ export class ServiceLoader {
         );
     }
 
+    private static _registry: ServiceRegisty = new ServiceRegisty();
 }
