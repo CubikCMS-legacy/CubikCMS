@@ -26,6 +26,7 @@ export class ServiceLoader {
         }
 
         const service = serviceIndex.service;
+        service.app = CubikCMS.application;
 
         await ErrorHandler.catchAsync(async () => {
 
