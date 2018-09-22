@@ -1,6 +1,6 @@
 import autobind from "autobind-decorator";
 import { EventEmitter } from "events";
-import { Config } from "../definitions/Config";
+import { Config } from "../definitions/shemes/Config";
 import { Application } from "./Application";
 import { Configuration } from "./Configuration";
 import { CubikCMS } from "./CubikCMS";
