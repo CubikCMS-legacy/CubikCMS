@@ -68,3 +68,4 @@ config.dev.json
 
 # don't ignore .gitkeep files
 !**/.gitkeep
+\.idea/workspace\.xml
