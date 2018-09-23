@@ -10,14 +10,14 @@ export enum LogLevel {
 }
 
 export class Logger {
-    public streamwriter: typeof console;
+    public streamWriter: typeof console;
 
     private readonly lvlTags   = [ "STEP",  "DEBUG",  "INFO",    "WARN",    "ERROR",  "FATAL" ];
     private readonly lvlColors = [ "gray",  "grey",   "reset",   "yellow",  "red",    "red"   ];
     // Colors are resolved from the color argument
 
     constructor() {
-        this.streamwriter = console;
+        this.streamWriter = console;
     }
 
     public log(level: LogLevel, ...data: string[]) {
@@ -32,9 +32,9 @@ export class Logger {
         );
 
         if (level === LogLevel.ERROR) {
-            return this.streamwriter.error(...data);
+            return this.streamWriter.error(...data);
         } else {
-            return this.streamwriter.log(...data);
+            return this.streamWriter.log(...data);
         }
     }
 

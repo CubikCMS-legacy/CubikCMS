@@ -2,7 +2,7 @@ import { getServiceIndex } from "../../helpers/serviceHelpers";
 import { CubikCMS } from "../CubikCMS";
 import { ErrorHandler } from "../ErrorHandler";
 import { NotFoundError } from "../errors/NotFoundError";
-import { ServiceRegisty } from "./ServiceRegistry";
+import { ServiceRegistry } from "./ServiceRegistry";
 
 export class ServiceLoader {
     public static get registry() {
@@ -72,10 +72,9 @@ export class ServiceLoader {
             return;
         }
 
-        return this.unload(name).then(
-            () => this.load(name)
-        );
+        await this.unload(name);
+        await this.load(name);
     }
 
-    private static _registry: ServiceRegisty = new ServiceRegisty();
+    private static _registry: ServiceRegistry = ServiceRegistry.INSTANCE;
 }

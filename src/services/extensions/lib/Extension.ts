@@ -2,6 +2,7 @@ import { fork, setupMaster, Worker } from "cluster";
 import { existsSync } from "fs";
 import { join } from "path";
 import { CubikCMS } from "../../../core/CubikCMS";
+import {InitializationError} from "../../../core/errors/InitializationError";
 
 export class Extension {
     public package: any;
@@ -15,7 +16,7 @@ export class Extension {
         const packagePath = join(root, "package.json");
 
         if (!existsSync(packagePath)) {
-            throw new Error("Extension package not found for '" + name + "'.");
+            throw new InitializationError(`Extension package not found for '${name}'.`);
         }
 
         const extensionPackage = require(packagePath);
@@ -29,7 +30,7 @@ export class Extension {
     get name() {
         const name = this.package.name;
         if (typeof name !== "string") {
-            throw new Error(this.pathName + ": Invalid extension name: " + name + ".");
+            throw new InitializationError(`${this.pathName}: Invalid extension name: ${name}.`);
         }
 
         return name;
@@ -38,7 +39,7 @@ export class Extension {
     get root() {
         const root = this.package.root;
         if (typeof root !== "string") {
-            throw new Error(this.pathName + ": Invalid extension root directory: " + root + ".");
+            throw new InitializationError(`${this.pathName}: Invalid extension root directory: ${root}.`);
         }
 
         return root;
@@ -68,6 +69,8 @@ export class Extension {
         CubikCMS.logger.debug(`Stopping extension '${this.name}'.`);
 
         this.worker.kill();
+
+        // Wait until the process is successfully exited.
         await new Promise((resolve) => {
             this.worker!.once("exit", () => {
                 if (this.worker!.exitedAfterDisconnect === true) {

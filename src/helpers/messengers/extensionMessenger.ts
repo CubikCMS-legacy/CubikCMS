@@ -1,6 +1,8 @@
 import { Extension } from "../../services/extensions/lib/Extension";
-import { ExtensionRegisty } from "../../services/extensions/lib/ExtensionRegistry";
+import { ExtensionRegistry } from "../../services/extensions/lib/ExtensionRegistry";
 import { hasEntriesInObject } from "../objectHelpers";
+
+const extensionRegistry = ExtensionRegistry.INSTANCE;
 
 export interface Message {
     cmd: string;
@@ -16,7 +18,7 @@ export interface MessageMatch {
 }
 
 export function sendToExtensions(msg: Message) {
-    const extensions = ExtensionRegisty.all();
+    const extensions = extensionRegistry.all();
     for (const name in extensions) {
         if (typeof extensions[name] !== "undefined") {
             const extension = extensions[name];
@@ -37,7 +39,7 @@ export function emitToExtensions(code: string, ...values: any[]) {
 }
 
 export function listenFromExtensions(match: MessageMatch, listener: (ext: Extension, msg: Message) => boolean | void) {
-    const extensions = ExtensionRegisty.all();
+    const extensions = extensionRegistry.all();
     for (const name in extensions) {
         if (typeof extensions[name] !== "undefined") {
             const extension = extensions[name];

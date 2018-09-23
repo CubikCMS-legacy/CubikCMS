@@ -1,16 +1,17 @@
 import { ExtensionsServer } from "../ExtensionsServer";
 import { Extension } from "./Extension";
-import { ExtensionRegisty } from "./ExtensionRegistry";
+import { ExtensionRegistry } from "./ExtensionRegistry";
 
 export class ExtensionRunner {
     public server: ExtensionsServer;
+    private registry = ExtensionRegistry.INSTANCE;
 
     constructor(server: ExtensionsServer) {
         this.server = server;
     }
 
     public async start() {
-        const extensions = ExtensionRegisty.all();
+        const extensions = this.registry.all();
         for (const name in extensions) {
             if (typeof extensions[name] !== "undefined") {
 
@@ -21,7 +22,7 @@ export class ExtensionRunner {
     }
 
     public async stop() {
-        const extensions = ExtensionRegisty.all();
+        const extensions = this.registry.all();
         for (const name in extensions) {
             if (typeof extensions[name] !== "undefined") {
 
@@ -38,11 +39,11 @@ export class ExtensionRunner {
             throw new Error(extension.pathName + ": Package name is not the same as his folder.");
         }
 
-        ExtensionRegisty.add(name, extension);
+        this.registry.add(name, extension);
     }
 
     public async load(name: string) {
-        const extension = ExtensionRegisty.get(name);
+        const extension = this.registry.get(name);
 
         if (extension == null) {
             throw new Error("Failed to load extension.");
@@ -52,10 +53,10 @@ export class ExtensionRunner {
     }
 
     public async unload(name: string) {
-        const extension = ExtensionRegisty.get(name);
+        const extension = this.registry.get(name);
         if (extension !== null) {
             await extension.killWorker();
-            ExtensionRegisty.remove(name);
+            this.registry.remove(name);
         }
     }
 }

@@ -5,14 +5,13 @@ export abstract class Service extends EventEmitter {
 
     public app!: Application;
 
-    constructor() {
+    protected constructor() {
         super();
     }
 
     public async restart() {
-        return this.stop().then(
-            () => this.start()
-        );
+        await this.stop();
+        await this.start();
     }
 
     public abstract async start(): Promise<void>;

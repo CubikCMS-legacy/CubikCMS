@@ -25,14 +25,14 @@ export class WebServer extends Service {
         await loadPlugins(this.server);
         await loadControllers(this.server);
 
-        return this.server.start()
-            .then(() => CubikCMS.logger.info(`Web server opened at "http://${address}:${port}/".`));
+        await this.server.start();
+        CubikCMS.logger.info(`Web server opened at "http://${address}:${port}/".`);
     }
 
     public async stop() {
         if (typeof this.server !== "undefined") {
-            return this.server.stop()
-                .then(() => CubikCMS.logger.info(`Web server stopped.`));
+            await this.server.stop();
+            CubikCMS.logger.info(`Web server stopped.`);
         }
     }
 
